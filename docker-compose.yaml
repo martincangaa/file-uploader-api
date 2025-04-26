@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - "${PUBLIC_API_PORT}:3000" # Map port given in the env file on the host to port 3000 in the container
+    volumes:
+      - ./src:/usr/src # Mount the current directory to /usr/src/app in the container
+      - ./uploads:/usr/uploads # Mount the uploads folder (optional, adjust as needed)
+    command: ["node", "src/app.js"] # Command to run the application
