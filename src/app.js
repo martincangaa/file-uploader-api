@@ -43,12 +43,11 @@ const upload = multer({
   limits: { fileSize: +process.env.MAX_FILE_SIZE},
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    const allowedMimes = ['text/html'];
-    const allowedExts = ['.html', '.htm'];
-    if (allowedMimes.includes(file.mimetype) && allowedExts.includes(ext)) {
+    const allowedExts = ['.html', '.htm', '.png'];
+    if (allowedExts.includes(ext)) {
       cb(null, true);
     } else {
-      cb(new Error('Only HTML files (.html, .htm) are allowed'));
+      cb(new Error('Only HTML files (.html, .htm, .png) are allowed'));
     }
   }
 });
@@ -78,7 +77,7 @@ app.post(
 app.post(
   '/upload-multiple',
   authenticateToken,
-  upload.array('files', 10),
+  upload.array('files', 50),
   (req, res) => {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files uploaded' });
